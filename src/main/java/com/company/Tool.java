@@ -1,7 +1,7 @@
 package com.company;
 
 /**
- * Tools should probably be in a database of some sort.
+ * Tools would be pulled from the database
  */
 
 public class Tool {
