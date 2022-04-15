@@ -8,7 +8,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.Scanner;
 
 
 public class Main {
@@ -25,21 +28,32 @@ public class Main {
 
     public static void main(String[] args) {
 
+        //move most of this logic to Checkout.
+
         try {
             Main main = new Main();
             main.initialize();
+            Scanner scan = new Scanner(System.in);
+            while(true){ //add input validation here
+                System.out.println("Enter the code: ");
+                String code = scan.next();
+                System.out.println("Enter rental days: ");
+                Integer rentalDays = scan.nextInt(); //non-int error -- catch exception, print help, and then restart loop
+                System.out.println("Discount percent :" );
+                Integer discountPercent = scan.nextInt(); //non-int error
+                System.out.println("Checkout date: ");
+                String checkoutDate = scan.next(); //date wrong, error
+                DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+                LocalDate.parse(checkoutDate, dateTimeFormatter);
+            }
 
 
-        } catch (URISyntaxException e) { //fix / move exception handling. 
-            System.out.println(e);
-
-
-        } catch (IOException e) {
-            System.out.println(e);
+        }  catch (IOException e) { //fix / move exception handling.
+            System.out.println("Unable to open configuration file");
 
 
         } catch (CsvValidationException e){
-            System.out.println(e);
+            System.out.println("Invalid csv configuration file");
 
         }
 
@@ -52,7 +66,7 @@ public class Main {
      * instead of csv, items could be stored in db, and just cached in the hashmap or something, depending on
      * item id the user requests.
      */
-    private void initialize() throws CsvValidationException, URISyntaxException, IOException {
+    private void initialize() throws CsvValidationException, IOException {
         File f = new File("src/main/resources/toolType.csv");
         Reader reader = new FileReader(f); //close these
 
