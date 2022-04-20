@@ -34,8 +34,6 @@ public class RentalAgreement {
         this.setChargeDays(); //calculate the charge days removing holidays or anything not charged.
         this.setPreDiscountCharge(); //calculates the charge prior to the discount
         this.setFinalCharge(); //sets the final charge
-        //this.twoDecimalPlaces(); //round things up to two decimal places
-
     }
 
     /**
@@ -128,17 +126,17 @@ public class RentalAgreement {
      */
     @Override
     public String toString() {
-        return "Tool code - " + tool.getCode() +
-                "\nTool type - " + tool.getToolType().getStringToolType() +
-                "\nTool brand - " + tool.getBrand() +
-                "\nRental Days - " + this.rentalDays +
-                "\nCheck out date - " + this.checkoutDate.toString() +
-                "\nDue date - " + this.dueDate.toString() +
-                "\nDaily rental charge - " + this.tool.getToolType().getDailyCharge() +
-                "\nCharge days - " + this.chargeDays +
-                "\nPre-discount charge - " + this.preDiscountCharge +
-                "\nDiscount percent - " + this.discountPercent +
-                "\nDiscount amount - " + this.discountAmount +
-                "\nFinal Charge - " + this.finalCharge;
+        return "Tool code: " + tool.getCode() +
+                "\nTool type: " + tool.getToolType().getStringToolType() +
+                "\nTool brand: " + tool.getBrand() +
+                "\nRental Days: " + this.rentalDays +
+                "\nCheck out date: " + this.checkoutDate.toString() +
+                "\nDue date: " + this.dueDate.toString() +
+                "\nDaily rental charge: " + this.tool.getToolType().getDailyCharge() +
+                "\nCharge days: " + this.chargeDays +
+                "\nPre-discount charge: " + this.preDiscountCharge +
+                "\nDiscount percent: " + this.discountPercent +
+                "\nDiscount amount: " + this.discountAmount +
+                "\nFinal Charge: " + this.finalCharge;
     }
 }

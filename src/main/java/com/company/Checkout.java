@@ -23,6 +23,7 @@ public class Checkout {
 
     /**
      * Gathers user input
+     *
      * @throws CheckoutException -- this needs to be the actual exception
      */
     public void gatherUserInput() throws CheckoutException {
