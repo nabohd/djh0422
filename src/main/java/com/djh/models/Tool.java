@@ -1,4 +1,4 @@
-package com.company;
+package com.djh.models;
 
 /**
  * Tools would be pulled from the database

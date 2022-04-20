@@ -1,4 +1,5 @@
-package com.company;
+package com.djh.models;
+
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -7,6 +8,10 @@ import java.time.LocalDate;
 import java.util.EnumSet;
 
 /**
+ * This model takes the minimum amount of input to calculate the remaining values.
+ *
+ * BigDecimal is used to have more accuracy compared to double for financial calculations.
+ *
  * This information would probably be stored in a database.
  */
 public class RentalAgreement {
@@ -83,11 +88,6 @@ public class RentalAgreement {
 
     /**
      * Calculate the charge after charge days is determined.
-     * Exclude july4th, first monday in Sept.
-     * Sept 1 - Sept 7 (7th latest)
-     * <p>
-     * Check for sat, sun, july 4th, sept 1 - 7
-     * depending on the ToolType.
      */
     private void setPreDiscountCharge() {
         preDiscountCharge = this.tool.getToolType().getDailyCharge().multiply(BigDecimal.valueOf(chargeDays));
@@ -101,23 +101,12 @@ public class RentalAgreement {
      */
     private void setFinalCharge() {
         discountAmount = preDiscountCharge.multiply(BigDecimal.valueOf ((double) discountPercent/100));
-        finalCharge = preDiscountCharge.subtract(discountAmount); //may need to round this as well.
         discountAmount = discountAmount.setScale(2, RoundingMode.HALF_UP);
+        finalCharge = preDiscountCharge.subtract(discountAmount); //may need to round this as well.
         finalCharge = finalCharge.setScale(2, RoundingMode.HALF_UP);
 
     }
 
-//    /**
-//     * Rounds double input number to two decimal places
-//     *
-//     * @param round - Number to be rounded to two decimal places
-//     * @return input number rounded to two decimal places
-//     */
-////    private BigDecimal twoDecimalPlaces(Double round){
-////        BigDecimal bigDecimal = BigDecimal.valueOf(round);
-////        bigDecimal.setScale(2, RoundingMode.HALF_UP);
-////        return bigDecimal.doubleValue();
-////    }
 
     /**
      * Override toString to easily print this object.
@@ -132,11 +121,11 @@ public class RentalAgreement {
                 "\nRental Days: " + this.rentalDays +
                 "\nCheck out date: " + this.checkoutDate.toString() +
                 "\nDue date: " + this.dueDate.toString() +
-                "\nDaily rental charge: " + this.tool.getToolType().getDailyCharge() +
+                "\nDaily rental charge: $" + this.tool.getToolType().getDailyCharge() +
                 "\nCharge days: " + this.chargeDays +
-                "\nPre-discount charge: " + this.preDiscountCharge +
-                "\nDiscount percent: " + this.discountPercent +
-                "\nDiscount amount: " + this.discountAmount +
-                "\nFinal Charge: " + this.finalCharge;
+                "\nPre-discount charge: $" + this.preDiscountCharge +
+                "\nDiscount percent: " + this.discountPercent +"%"+
+                "\nDiscount amount: $" + this.discountAmount +
+                "\nFinal Charge: $" + this.finalCharge;
     }
 }

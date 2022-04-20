@@ -1,4 +1,4 @@
-package com.company;
+package com.djh.models;
 
 import java.math.BigDecimal;
 
