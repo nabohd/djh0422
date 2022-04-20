@@ -1,43 +1,46 @@
 package com.company;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.EnumSet;
 
 /**
- * This information would probably be stored somewhere.
+ * This information would probably be stored in a database.
  */
 public class RentalAgreement {
 
 
-    private Tool tool;
-    private Integer rentalDays;
-    private LocalDate checkoutDate;
-    private LocalDate dueDate;
-    private double dailyRentalCharge;
+    private final Tool tool;
+    private final Integer rentalDays;
+    private final LocalDate checkoutDate;
+    private final LocalDate dueDate;
     private Integer chargeDays;
-    private double preDiscountCharge;
-    private Integer discountPercent;
-    private double discountAmount;
-    private double finalCharge;
+    private BigDecimal preDiscountCharge;
+    private final Integer discountPercent;
+    private BigDecimal discountAmount;
+    private BigDecimal finalCharge;
 
-    public RentalAgreement(Tool tool, LocalDate checkoutDate, double discountAmount, double dailyRentalCharge,
+    public RentalAgreement(Tool tool, LocalDate checkoutDate,
                            Integer discountPercent, Integer rentalDays) {
         this.tool = tool;
         this.checkoutDate = checkoutDate;
-        this.dailyRentalCharge = dailyRentalCharge;
         this.discountPercent = discountPercent;
-        this.dueDate = checkoutDate.plusDays(rentalDays); //duedate calculated from rentalDays.
-        this.discountAmount = discountAmount;
+        this.dueDate = checkoutDate.plusDays(rentalDays); //due date calculated from rentalDays.
         this.chargeDays = 0;
         this.rentalDays = rentalDays;
 
-        this.setChargeDays();
-        this.setPreDiscountCharge();
-        this.setFinalCharge();
+        this.setChargeDays(); //calculate the charge days removing holidays or anything not charged.
+        this.setPreDiscountCharge(); //calculates the charge prior to the discount
+        this.setFinalCharge(); //sets the final charge
+        //this.twoDecimalPlaces(); //round things up to two decimal places
 
     }
 
+    /**
+     * Calculates the number of charge days based on the toolType information.
+     */
     private void setChargeDays() {
         //enumset containing all weekdays.
         EnumSet<DayOfWeek> weekDaySet = EnumSet.of(
@@ -89,7 +92,9 @@ public class RentalAgreement {
      * depending on the ToolType.
      */
     private void setPreDiscountCharge() {
-        preDiscountCharge *= chargeDays;
+        preDiscountCharge = this.tool.getToolType().getDailyCharge().multiply(BigDecimal.valueOf(chargeDays));
+        preDiscountCharge = preDiscountCharge.setScale(2, RoundingMode.HALF_UP);
+
 
     }
 
@@ -97,10 +102,24 @@ public class RentalAgreement {
      * Calculate the final charge
      */
     private void setFinalCharge() {
-        discountAmount = preDiscountCharge * ((double)discountPercent/100);
-        finalCharge = preDiscountCharge - discountAmount;
+        discountAmount = preDiscountCharge.multiply(BigDecimal.valueOf ((double) discountPercent/100));
+        finalCharge = preDiscountCharge.subtract(discountAmount); //may need to round this as well.
+        discountAmount = discountAmount.setScale(2, RoundingMode.HALF_UP);
+        finalCharge = finalCharge.setScale(2, RoundingMode.HALF_UP);
 
     }
+
+//    /**
+//     * Rounds double input number to two decimal places
+//     *
+//     * @param round - Number to be rounded to two decimal places
+//     * @return input number rounded to two decimal places
+//     */
+////    private BigDecimal twoDecimalPlaces(Double round){
+////        BigDecimal bigDecimal = BigDecimal.valueOf(round);
+////        bigDecimal.setScale(2, RoundingMode.HALF_UP);
+////        return bigDecimal.doubleValue();
+////    }
 
     /**
      * Override toString to easily print this object.
@@ -110,12 +129,12 @@ public class RentalAgreement {
     @Override
     public String toString() {
         return "Tool code - " + tool.getCode() +
-                "\nTool type - " + tool.getToolType() +
+                "\nTool type - " + tool.getToolType().getStringToolType() +
                 "\nTool brand - " + tool.getBrand() +
                 "\nRental Days - " + this.rentalDays +
                 "\nCheck out date - " + this.checkoutDate.toString() +
                 "\nDue date - " + this.dueDate.toString() +
-                "\nDaily rental charge - " + this.dailyRentalCharge +
+                "\nDaily rental charge - " + this.tool.getToolType().getDailyCharge() +
                 "\nCharge days - " + this.chargeDays +
                 "\nPre-discount charge - " + this.preDiscountCharge +
                 "\nDiscount percent - " + this.discountPercent +

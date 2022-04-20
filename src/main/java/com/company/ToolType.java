@@ -1,16 +1,18 @@
 package com.company;
 
+import java.math.BigDecimal;
+
 /**
  * Normally this would be pulled from the database
  */
 public class ToolType {
     private String stringToolType;
-    private double dailyCharge;
+    private BigDecimal dailyCharge;
     private boolean weekDayCharge;
     private boolean weekendCharge;
     private boolean holidayCharge;
 
-    public ToolType(String stringToolType, double dailyCharge, boolean weekDayCharge, boolean weekendCharge,
+    public ToolType(String stringToolType, BigDecimal dailyCharge, boolean weekDayCharge, boolean weekendCharge,
                     boolean holidayCharge) {
         this.stringToolType = stringToolType;
         this.dailyCharge = dailyCharge;
@@ -23,7 +25,7 @@ public class ToolType {
         return stringToolType;
     }
 
-    public double getDailyCharge() {
+    public BigDecimal getDailyCharge() {
         return dailyCharge;
     }
 
