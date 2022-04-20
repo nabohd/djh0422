@@ -36,18 +36,19 @@ class CheckoutTest {
     @Test
     public void secondTest(){
         try {
-            assertEquals("Tool code: LADW\n" +
-                    "Tool type: Ladder\n" +
-                    "Tool brand: Werner\n" +
-                    "Rental Days: 3\n" +
-                    "Check out date: 2020-07-02\n" +
-                    "Due date: 2020-07-05\n" +
-                    "Daily rental charge: 1.99\n" +
-                    "Charge days: 2\n" +
-                    "Pre-discount charge: 3.98\n" +
-                    "Discount percent: 10\n" +
-                    "Discount amount: 0.40\n" +
-                    "Final Charge: 3.58",
+            assertEquals("""
+                            Tool code: LADW
+                            Tool type: Ladder
+                            Tool brand: Werner
+                            Rental Days: 3
+                            Check out date: 2020-07-02
+                            Due date: 2020-07-05
+                            Daily rental charge: 1.99
+                            Charge days: 2
+                            Pre-discount charge: 3.98
+                            Discount percent: 10
+                            Discount amount: 0.40
+                            Final Charge: 3.58""",
                     checkout.generateRentalAgreement("LADW", 3, 10,
                             getLocalDate("07/02/20")).toString());
 
@@ -59,18 +60,19 @@ class CheckoutTest {
     @Test
     public void thirdTest(){
         try {
-            assertEquals("Tool code: CHNS\n" +
-                    "Tool type: Chainsaw\n" +
-                    "Tool brand: Stihl\n" +
-                    "Rental Days: 5\n" +
-                    "Check out date: 2015-07-02\n" +
-                    "Due date: 2015-07-07\n" +
-                    "Daily rental charge: 1.49\n" +
-                    "Charge days: 3\n" +
-                    "Pre-discount charge: 4.47\n" +
-                    "Discount percent: 25\n" +
-                    "Discount amount: 1.12\n" +
-                    "Final Charge: 3.35",
+            assertEquals("""
+                            Tool code: CHNS
+                            Tool type: Chainsaw
+                            Tool brand: Stihl
+                            Rental Days: 5
+                            Check out date: 2015-07-02
+                            Due date: 2015-07-07
+                            Daily rental charge: 1.49
+                            Charge days: 3
+                            Pre-discount charge: 4.47
+                            Discount percent: 25
+                            Discount amount: 1.12
+                            Final Charge: 3.35""",
                     checkout.generateRentalAgreement("CHNS", 5, 25,
                             getLocalDate("07/02/15")).toString());
         }catch (CheckoutException e){
@@ -82,7 +84,21 @@ class CheckoutTest {
     @Test
     public void fourthTest(){
         try {
-            checkout.generateRentalAgreement("JAKD", 6, 0, getLocalDate("09/03/15"));
+            assertEquals("""
+                            Tool code: JAKD
+                            Tool type: Jackhammer
+                            Tool brand: DeWalt
+                            Rental Days: 6
+                            Check out date: 2015-09-03
+                            Due date: 2015-09-09
+                            Daily rental charge: 2.99
+                            Charge days: 3
+                            Pre-discount charge: 8.97
+                            Discount percent: 0
+                            Discount amount: 0.00
+                            Final Charge: 8.97""",
+                    checkout.generateRentalAgreement("JAKD",
+                    6, 0, getLocalDate("09/03/15")).toString());
         }catch (CheckoutException e){
             fail("Unexpected checkout exception thrown: " + e.getMessage());
         }
@@ -92,7 +108,21 @@ class CheckoutTest {
     @Test
     public void fifthTest(){
         try {
-            checkout.generateRentalAgreement("JAKR", 9, 0, getLocalDate("07/02/15"));
+            assertEquals("""
+                            Tool code: JAKR
+                            Tool type: Jackhammer
+                            Tool brand: Ridgid
+                            Rental Days: 9
+                            Check out date: 2015-07-02
+                            Due date: 2015-07-11
+                            Daily rental charge: 2.99
+                            Charge days: 6
+                            Pre-discount charge: 17.94
+                            Discount percent: 0
+                            Discount amount: 0.00
+                            Final Charge: 17.94""",
+                    checkout.generateRentalAgreement("JAKR", 9, 0,
+                            getLocalDate("07/02/15")).toString());
         }catch (CheckoutException e){
             fail("Unexpected checkout exception thrown: " + e.getMessage());
         }
@@ -102,11 +132,24 @@ class CheckoutTest {
     @Test
     public void sixthTest(){
         try {
-            checkout.generateRentalAgreement("JAKR", 4, 50, getLocalDate("07/02/20"));
+            assertEquals("""
+                            Tool code: JAKR
+                            Tool type: Jackhammer
+                            Tool brand: Ridgid
+                            Rental Days: 4
+                            Check out date: 2020-07-02
+                            Due date: 2020-07-06
+                            Daily rental charge: 2.99
+                            Charge days: 2
+                            Pre-discount charge: 5.98
+                            Discount percent: 50
+                            Discount amount: 2.99
+                            Final Charge: 2.99""",
+                    checkout.generateRentalAgreement("JAKR", 4, 50,
+                        getLocalDate("07/02/20")).toString());
         }catch (CheckoutException e){
             fail("Unexpected checkout exception thrown: " + e.getMessage());
         }
-
     }
 
     /**
