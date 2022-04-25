@@ -3,9 +3,12 @@ package com.djh.models;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.EnumSet;
+import java.util.Locale;
 
 /**
  * This model takes the minimum amount of input to calculate the remaining values.
@@ -115,17 +118,20 @@ public class RentalAgreement {
      */
     @Override
     public String toString() {
+        DecimalFormat df = new DecimalFormat("#,##0.00",
+                new DecimalFormatSymbols(Locale.ENGLISH)); //add commas / format output.
+
         return "Tool code: " + tool.getCode() +
                 "\nTool type: " + tool.getToolType().getStringToolType() +
                 "\nTool brand: " + tool.getBrand() +
                 "\nRental Days: " + this.rentalDays +
                 "\nCheck out date: " + this.checkoutDate.toString() +
                 "\nDue date: " + this.dueDate.toString() +
-                "\nDaily rental charge: $" + this.tool.getToolType().getDailyCharge() +
+                "\nDaily rental charge: $" + df.format(this.tool.getToolType().getDailyCharge()) +
                 "\nCharge days: " + this.chargeDays +
-                "\nPre-discount charge: $" + this.preDiscountCharge +
+                "\nPre-discount charge: $" + df.format(this.preDiscountCharge) +
                 "\nDiscount percent: " + this.discountPercent +"%"+
-                "\nDiscount amount: $" + this.discountAmount +
-                "\nFinal Charge: $" + this.finalCharge;
+                "\nDiscount amount: $" + df.format(this.discountAmount) +
+                "\nFinal Charge: $" + df.format(this.finalCharge);
     }
 }

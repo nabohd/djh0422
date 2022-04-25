@@ -24,6 +24,7 @@ import java.util.Scanner;
 public class Checkout {
 
     //if this was being modified on the fly & multi-threaded singleton, use ConcurrentHashmap
+    //contains all tools with their associated toolTypes.
     private HashMap<String, Tool> tools = new HashMap<>();
 
     public Checkout() throws CsvValidationException, IOException {
@@ -33,7 +34,7 @@ public class Checkout {
     /**
      * Gathers user input from the command line and builds a RentalAgreement object.
      *
-     * @throws CheckoutException -- this needs to be the actual exception
+     * @throws CheckoutException -- Thrown when discount percent is invalid / Rental Days less than 1.
      * @return RentalAgreement generated from user input.
      */
     public RentalAgreement commandLineInputRentalAgreement() throws CheckoutException {
@@ -94,6 +95,11 @@ public class Checkout {
         HashMap<String, ToolType> toolTypes = new HashMap<>(); //temporary lookup variable used for tools.
         File f = new File("src/main/resources/toolType.csv");
         //try with resources
+        final int TYPE = 0;
+        final int DAILY_CHARGE = 1;
+        final int WEEKDAY = 2;
+        final int WEEKEND = 3;
+        final int HOLIDAY = 4;
         try (Reader reader = new FileReader(f); CSVReader csvReader = new CSVReader(reader)) {
             String[] readValues;
             while ((readValues = csvReader.readNext()) != null) {
@@ -101,11 +107,11 @@ public class Checkout {
                     continue; //skip header
                 }
                 //  toolType,Daily Charge,Weekday Charge,Weekend Charge, Holiday Charge
-                String type = readValues[0];
-                BigDecimal dailyCharge = BigDecimal.valueOf(Double.parseDouble(readValues[1].replace("$", "")));
-                boolean weekDayCharge = readValues[2].equals("Yes");
-                boolean weekendCharge = readValues[3].equals("Yes");
-                boolean holidayCharge = readValues[4].equals("Yes");
+                String type = readValues[TYPE];
+                BigDecimal dailyCharge = BigDecimal.valueOf(Double.parseDouble(readValues[DAILY_CHARGE].replace("$", "")));
+                boolean weekDayCharge = readValues[WEEKDAY].equals("Yes");
+                boolean weekendCharge = readValues[WEEKEND].equals("Yes");
+                boolean holidayCharge = readValues[HOLIDAY].equals("Yes");
                 ToolType toolType = new ToolType(type, dailyCharge, weekDayCharge, weekendCharge, holidayCharge);
                 toolTypes.put(type, toolType);
 
@@ -113,8 +119,10 @@ public class Checkout {
 
         }
 
-        //Consider creating index identifiers
-        //ie int CODE = 0, int BRAND = 2
+        //index identifiers
+        final int CODE = 0;
+        final int BRAND = 2;
+        final int TOOLTYPE = 1;
         f = new File("src/main/resources/tools.csv");
         //try with resources
         try (Reader reader = new FileReader(f); CSVReader csvReader = new CSVReader(reader)) {
@@ -124,9 +132,9 @@ public class Checkout {
                 if (readValues[0].equalsIgnoreCase("Tool Code")) {
                     continue; //skip header
                 }
-                String code = readValues[0];
-                String brand = readValues[2];
-                ToolType toolType = toolTypes.get(readValues[1]); //error if not in hashmap.
+                String code = readValues[CODE];
+                String brand = readValues[BRAND];
+                ToolType toolType = toolTypes.get(readValues[TOOLTYPE]); //error if not in hashmap.
                 Tool tool = new Tool(code, brand, toolType);
                 this.tools.put(code, tool);
             }

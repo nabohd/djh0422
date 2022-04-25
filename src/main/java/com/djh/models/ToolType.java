@@ -3,7 +3,7 @@ package com.djh.models;
 import java.math.BigDecimal;
 
 /**
- * Normally this would be pulled from the database
+ * The ToolType model is populated from the ToolType.csv configuration file.
  */
 public class ToolType {
     private String stringToolType;

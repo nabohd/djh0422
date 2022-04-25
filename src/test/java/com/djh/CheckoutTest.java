@@ -154,7 +154,47 @@ class CheckoutTest {
         }
     }
 
-    //Some additional tests.
+    @Test
+    public void formattingTest(){
+        try {
+            assertEquals("""
+                            Tool code: JAKR
+                            Tool type: Jackhammer
+                            Tool brand: Ridgid
+                            Rental Days: 500
+                            Check out date: 2020-07-02
+                            Due date: 2021-11-14
+                            Daily rental charge: $2.99
+                            Charge days: 354
+                            Pre-discount charge: $1,058.46
+                            Discount percent: 50%
+                            Discount amount: $529.23
+                            Final Charge: $529.23""",
+                    checkout.generateRentalAgreement("JAKR", 500, 50,
+                            getLocalDate("07/02/20")).toString());
+        }catch (CheckoutException e){
+            fail("Unexpected checkout exception thrown: " + e.getMessage());
+        }
+    }
+
+    @Test
+    public void zeroDaysCheckoutExceptionTest() {
+        assertThrows(CheckoutException.class, () ->
+                checkout.generateRentalAgreement("JAKR", 0, 50, getLocalDate("09/03/15")));
+    }
+
+    @Test
+    public void negativeDiscountCheckoutExceptionTest() {
+        assertThrows(CheckoutException.class, () ->
+                checkout.generateRentalAgreement("JAKR", 5, -50, getLocalDate("09/03/15")));
+    }
+
+    @Test
+    public void lessThanZeroDaysCheckoutExceptionTest() {
+        assertThrows(CheckoutException.class, () ->
+                checkout.generateRentalAgreement("JAKR", -50, 50, getLocalDate("09/03/15")));
+    }
+
 
 
     /**

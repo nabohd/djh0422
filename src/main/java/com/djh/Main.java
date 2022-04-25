@@ -42,11 +42,7 @@ public class Main {
                 System.out.println("Input the date in MM/dd/yy format (Example: 04/03/22)");
             }
         }
-
-
     }
-
-
 
 
 }

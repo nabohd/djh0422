@@ -1,13 +1,14 @@
 package com.djh.models;
 
 /**
- * Tools would be pulled from the database
+ *
+ * This model holds data pulled from the CSV configuration files "tools.csv" and "toolType.csv".
  */
 
 public class Tool {
-    private String code;
-    private String brand;
-    private ToolType toolType;
+    private final String code;
+    private final String brand;
+    private final ToolType toolType;
 
     public Tool(String code, String brand, ToolType toolType){
         this.code = code;
